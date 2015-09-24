@@ -61,22 +61,22 @@ angular.module('starter.controllers', [])
       //var appID = "com.whatsapp";
       navigator.startApp.check(appID, function(message) { /* success */
           // se existe o app no aparelho então inicia o app
-          alert("App encontrado ["+appID+"]");
+          alert("App encontrado com sucesso ["+appID+"]. Clique ok.");
           $scope.startApp(appID);
       }, 
       function(error) { /* error */
           // se não existe o app no aparelho abre a loja no aplicativo para download
           // $scope.startApp("com.android.vending", [appID]);
-          alert('Deu erro!!!!');
-          navigator.startApp.start([["action", "VIEW"], ["https://play.google.com/store/apps/details?id="+appID]], 
-            function (message) {
-                console.log(message);
-            },
-            function (error) {
-                alert('Deu pau!');
-            }
-
-          );
+          if (confirm('App não foi encontrado. Abrir loja para download?')) {
+              navigator.startApp.start([["action", "VIEW"], ["https://play.google.com/store/apps/details?id="+appID]], 
+                function (message) {
+                    console.log(message);
+                },
+                function (error) {
+                    alert('Erro ao tentar abrir loja para app ['+appID+']: '+ error);
+                }
+              );
+          }
       });
   };
 
